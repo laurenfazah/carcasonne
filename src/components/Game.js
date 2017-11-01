@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import Board from './Board'
 
 class Game extends Component {
@@ -9,4 +9,4 @@ class Game extends Component {
   }
 }
 
-export default Game;
+export default Game
