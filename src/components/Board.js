@@ -22,19 +22,20 @@ class Board extends Component {
     this._placeTile("D")
   }
 
-  _placeTile(value) {
-    this._pullTile(value)
+  _placeTile(design) {
+    this._pullTile(design)
     // place onto board/grid
     // get position placed and add to obj; playedTiles
+    let tileWithPosition;
     this.setState({
       deck: this.state.deck,
-      playedTiles: this.state.playedTiles <<
+      playedTiles: this.state.playedTiles.push(tileWithPosition)
     })
   }
 
-  _pullTile(value) {
+  _pullTile(design) {
     this.state.deck.filter((tile) => {
-      if (tile.id === value) {
+      if (tile.design === design) {
         // build in === 0 validation
         tile.quantity--
         return tile
