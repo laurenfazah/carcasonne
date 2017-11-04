@@ -45,7 +45,7 @@ class Board extends Component {
 
   render() {
     const tiles = this.state.playedTiles.map((tile, i) => {
-      return <Tile key={i} meta={tile.meta}/>
+      return <Tile key={i} meta={tile}/>
     })
 
     return (
