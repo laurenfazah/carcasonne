@@ -4,19 +4,14 @@ class Tile extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      borders: {
-        top: false,
-        right: false,
-        bottom: false,
-        left: false
-      },
-      design: props.meta.design
+      neighbors: [false, false, false, false],
     }
   }
 
   render() {
     return (
-      <li>
+      <li className="tile">
+
       </li>
     )
   }
