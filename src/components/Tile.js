@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import styleMap from '../data/styleMap'
 
 class Tile extends Component {
   constructor(props) {
@@ -10,7 +11,7 @@ class Tile extends Component {
 
   render() {
     return (
-      <li className="tile">
+      <li className={styleMap[this.props.meta.position] +" tile"}>
 
       </li>
     )

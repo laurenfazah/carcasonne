@@ -1,11 +1,19 @@
 body {
   font-family: sans-serif;
   margin: 0;
-  padding: 20px;
-}
+  padding: 0; }
 
 .tile {
+  background-color: #e3ee31;
+  border: 1px	#4366b0 solid;
   height: 30px;
-  width: 30px;
-  border: 1px black solid;
-}
+  list-style-type: none;
+  position: absolute;
+  width: 30px; }
+
+.board {
+  background-color: black;
+  height: 100vh;
+  margin: 0;
+  position: relative;
+  width: 100%; }

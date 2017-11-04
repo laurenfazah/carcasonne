@@ -21,6 +21,7 @@ class Board extends Component {
   }
 
   _findTile(design) {
+    // need to figure out why this workaround needs to happen
     let foundTile;
     this.state.deck.forEach(tile => {
       if (tile.design === design) {
@@ -58,9 +59,11 @@ class Board extends Component {
       return <Tile key={i} meta={tile}/>
     })
 
+    console.log(this.state.playedTiles)
+
     return (
-      <ul>
-      {tiles}
+      <ul className="board">
+        {tiles}
       </ul>
     );
   }
