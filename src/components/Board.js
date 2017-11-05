@@ -53,13 +53,22 @@ class Board extends Component {
     })
   }
 
-  render() {
-    // debugger;
-    const tiles = this.state.playedTiles.map((tile, i) => {
-      return <Tile key={i} meta={tile}/>
-    })
+  _updatePositionPlaced(tileNode) {
+    let lastTile = this.state.playedTiles[this.state.playedTiles.length - 1]
+    lastTile.domPosition = {
+      offsetTop: tileNode.offsetTop,
+      offsetLeft: tileNode.offsetLeft
+    }
+  }
 
-    console.log(this.state.playedTiles)
+  render() {
+    const tiles = this.state.playedTiles.map((tile, i) => {
+      return <Tile
+                key={i}
+                meta={tile}
+                positionRef={tileNode => this._updatePositionPlaced(tileNode)}
+              />
+    })
 
     return (
       <ul className="board">

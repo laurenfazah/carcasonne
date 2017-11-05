@@ -9,9 +9,28 @@ class Tile extends Component {
     }
   }
 
+  _highlightAvailable() {
+    let neighbors = this.state.neighbors
+    if (!neighbors[0]) {
+      console.log("top free")
+    }
+    if (!neighbors[1]) {
+      console.log("right free")
+    }
+    if (!neighbors[2]) {
+      console.log("bottom free")
+    }
+    if (!neighbors[3]) {
+      console.log("left free")
+    }
+  }
+
   render() {
     return (
-      <li className={styleMap[this.props.meta.position] +" tile"}>
+      <li
+        className={styleMap[this.props.meta.position] +" tile"}
+        ref={this.props.positionRef}
+      >
 
       </li>
     )
