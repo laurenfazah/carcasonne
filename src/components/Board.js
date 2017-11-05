@@ -7,58 +7,63 @@ class Board extends Component {
     super(props);
     this.state = {
       deck: this.props.deck,
-      playedTiles: []
+      playedTiles: [],
+      currentTile: false
     }
   }
 
   componentWillMount() {
+    console.log(this.state.deck)
     this._buildBoard()
   }
 
   _buildBoard() {
-    this._placeTile("D", [0, 0])
-    this._pullTile("D")
+    this._placeTile(8, [0, 0])
+    this._pullTile(8)
   }
 
-  _findTile(design) {
+  _findTile(id) {
     // need to figure out why this workaround needs to happen
     let foundTile;
     this.state.deck.forEach(tile => {
-      if (tile.design === design) {
+      if (tile.id === id) {
         foundTile = tile
       }
     })
     return foundTile;
   }
 
-  _placeTile(design, position) {
-    let foundTile = this._findTile(design)
+  _placeTile(id, position) {
+    let foundTile = this._findTile(id)
     foundTile.position = position
 
     // need to figure out why this workaround needs to happen
     this.state.playedTiles.push(foundTile)
     this.setState({
-      deck: this.state.deck,
       playedTiles: this.state.playedTiles
     })
   }
 
-  _pullTile(design) {
-    this.state.deck.filter(tile => {
-      if (tile.design === design) {
-        // build in === 0 validation
-        tile.quantity--
-        return tile
+  _pullTile(id) {
+    this.state.deck.forEach(tile => {
+      if (tile.id === id) {
+        _.pull(this.state.deck, tile)
+        this.setState({
+          deck: this.state.deck
+        })
       }
     })
   }
 
   _updatePositionPlaced(tileNode) {
-    let lastTile = this.state.playedTiles[this.state.playedTiles.length - 1]
+    let lastTile = _.last(this.state.playedTiles)
     lastTile.domPosition = {
       offsetTop: tileNode.offsetTop,
       offsetLeft: tileNode.offsetLeft
     }
+  }
+
+  _placeNextTile() {
   }
 
   render() {
@@ -71,7 +76,10 @@ class Board extends Component {
     })
 
     return (
-      <ul className="board">
+      <ul
+        className="board"
+        onClick={this._placeNextTile.bind(this)}
+      >
         {tiles}
       </ul>
     );
