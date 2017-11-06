@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
 import Tile from './Tile'
 import _ from 'lodash'
 
@@ -12,66 +13,67 @@ class Board extends Component {
     }
   }
 
+  componentDidMount() {
+    this._updatePositionPlaced()
+  }
+
   componentWillMount() {
-    console.log(this.state.deck)
     this._buildBoard()
   }
 
   _buildBoard() {
-    this._placeTile(8, [0, 0])
-    this._pullTile(8)
+    let starterTile = this._findTile(8)
+
+    this._placeTile(starterTile, [0, 0])
+    this._pullTile(starterTile)
   }
 
   _findTile(id) {
-    // need to figure out why this workaround needs to happen
-    let foundTile;
-    this.state.deck.forEach(tile => {
-      if (tile.id === id) {
-        foundTile = tile
-      }
-    })
-    return foundTile;
+    return _.find(this.state.deck, {id: id})
   }
 
-  _placeTile(id, position) {
-    let foundTile = this._findTile(id)
-    foundTile.position = position
+  _placeTile(tile, position) {
+    tile.position = position
 
     // need to figure out why this workaround needs to happen
-    this.state.playedTiles.push(foundTile)
+    this.state.playedTiles.push(tile)
     this.setState({
       playedTiles: this.state.playedTiles
     })
   }
 
-  _pullTile(id) {
-    this.state.deck.forEach(tile => {
-      if (tile.id === id) {
-        _.pull(this.state.deck, tile)
-        this.setState({
-          deck: this.state.deck
-        })
-      }
+  _pullTile(tile) {
+    _.pull(this.state.deck, tile)
+
+    let nextTile = this.state.deck.pop()
+    this.setState({
+      currentTile: nextTile,
+      deck: this.state.deck
     })
   }
 
-  _updatePositionPlaced(tileNode) {
+  _placeNextTile() {
+    // need to grab position clicked, for now [0,1]
+    this._placeTile(this.state.currentTile, [0,1])
+    this._pullTile(this.state.currentTile)
+  }
+
+  _updatePositionPlaced() {
     let lastTile = _.last(this.state.playedTiles)
     lastTile.domPosition = {
-      offsetTop: tileNode.offsetTop,
-      offsetLeft: tileNode.offsetLeft
+      offsetTop: this.domNode.offsetTop,
+      offsetLeft: this.domNode.offsetLeft
     }
   }
 
-  _placeNextTile() {
-  }
-
   render() {
+    console.log("Next tile to place: ", this.state.currentTile)
     const tiles = this.state.playedTiles.map((tile, i) => {
+
       return <Tile
                 key={i}
                 meta={tile}
-                positionRef={tileNode => this._updatePositionPlaced(tileNode)}
+                positionRef={node => this.domNode = node}
               />
     })
 
