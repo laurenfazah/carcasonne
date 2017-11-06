@@ -10,6 +10,8 @@ body {
   list-style-type: none;
   position: absolute;
   width: 30px; }
+  .tile.ghost {
+    background-color: black; }
 
 .board {
   background-color: black;

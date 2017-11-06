@@ -21,6 +21,28 @@ class Board extends Component {
     this._buildBoard()
   }
 
+  _availableSpaces() {
+    const availSpaces = this._findFreeNeighbors()
+    return availSpaces.map(space => {
+      return space[1].map(neighbor => {
+        // brute force now, refactor later
+        let lastTile = _.last(this.state.playedTiles)
+        if (neighbor === 0) {
+          return [lastTile.domPosition.offsetTop - this.tileSize, lastTile.domPosition.offsetLeft]
+        }
+        if (neighbor === 1) {
+          return [lastTile.domPosition.offsetTop, lastTile.domPosition.offsetLeft + this.tileSize]
+        }
+        if (neighbor === 2) {
+          return [lastTile.domPosition.offsetTop + this.tileSize, lastTile.domPosition.offsetLeft]
+        }
+        if (neighbor === 3) {
+          return [lastTile.domPosition.offsetTop, lastTile.domPosition.offsetLeft - this.tileSize]
+        }
+      }, this)
+    }, this)[0]
+  }
+
   _buildBoard() {
     let starterTile = this._findTile(8)
 
@@ -69,28 +91,6 @@ class Board extends Component {
     this._pullTile(this.currentTile)
   }
 
-  _showAvailableSpaces() {
-  	const availSpaces = this._findFreeNeighbors()
-    return availSpaces.map(space => {
-      return space[1].map(neighbor => {
-        // brute force now, refactor later
-        let lastTile = _.last(this.state.playedTiles)
-        if (neighbor === 0) {
-          return [lastTile.domPosition.offsetTop - this.tileSize, lastTile.domPosition.offsetLeft]
-        }
-        if (neighbor === 1) {
-          return [lastTile.domPosition.offsetTop, lastTile.domPosition.offsetLeft + this.tileSize]
-        }
-        if (neighbor === 2) {
-          return [lastTile.domPosition.offsetTop + this.tileSize, lastTile.domPosition.offsetLeft]
-        }
-        if (neighbor === 3) {
-          return [lastTile.domPosition.offsetTop, lastTile.domPosition.offsetLeft - this.tileSize]
-        }
-      }, this)
-    }, this)[0]
-  }
-
   _updatePositionPlaced() {
     let lastTile = _.last(this.state.playedTiles)
     lastTile.domPosition = {
@@ -100,10 +100,25 @@ class Board extends Component {
   }
 
   render() {
-    console.log("Next tile to place: ", this.currentTile)
-    const tiles =  this.state.playedTiles.map((tile, i) => {
+    console.log("Next tile to place: ", this.state.currentTile)
+    const ghostTiles = this._availableSpaces().map((space, i) => {
       return <Tile
                 key={i}
+                ghost="ghost"
+                meta={
+                  {domPosition: {
+                    offsetTop: space[0],
+                    offsetLeft: space[1]
+                  }}
+                }
+                positionRef={node => this.domNode = node}
+              />
+    })
+
+    const tiles = this.state.playedTiles.map((tile, i) => {
+      return <Tile
+                key={i}
+                ghost={false}
                 meta={tile}
                 positionRef={node => this.domNode = node}
               />
@@ -114,7 +129,8 @@ class Board extends Component {
         className="board"
         onClick={this._placeNextTile.bind(this)}
       >
-      {tiles}
+        {tiles}
+        {ghostTiles}
       </ul>
     );
   }

@@ -13,7 +13,7 @@ class Tile extends Component {
   render() {
     return (
       <li
-        className="tile"
+        className={"tile " + this.props.ghost}
         ref={this.props.positionRef}
 	      style={this.styles}
       >
