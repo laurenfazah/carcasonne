@@ -4,16 +4,19 @@ import styleMap from '../data/styleMap'
 class Tile extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      neighbors: [false, false, false, false],
+    debugger;
+    this.styles = {
+   	  top: props.meta.domPosition.offsetTop,
+   	  left: props.meta.domPosition.offsetLeft
     }
   }
 
   render() {
     return (
       <li
-        className={styleMap[this.props.meta.position] +" tile"}
+        className="tile"
         ref={this.props.positionRef}
+	      style={this.styles}
       >
       </li>
     )
