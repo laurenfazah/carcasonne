@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import styleMap from '../data/styleMap'
 
 class Tile extends Component {
   constructor(props) {
