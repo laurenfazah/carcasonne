@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Tile from './Tile'
+import GhostTile from './GhostTile'
 import _ from 'lodash'
 
 class Board extends Component {
@@ -101,16 +102,10 @@ class Board extends Component {
 
   render() {
     console.log("Next tile to place: ", this.state.currentTile)
-    const ghostTiles = this._availableSpaces().map((space, i) => {
-      return <Tile
+    const ghostTiles = this._availableSpaces().map((coords, i) => {
+      return <GhostTile
                 key={i}
-                ghost="ghost"
-                meta={
-                  {domPosition: {
-                    offsetTop: space[0],
-                    offsetLeft: space[1]
-                  }}
-                }
+                positions={coords}
                 positionRef={node => this.domNode = node}
               />
     })
