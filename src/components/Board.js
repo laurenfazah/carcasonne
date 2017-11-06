@@ -65,6 +65,16 @@ class Board extends Component {
     return _.find(this.deck, {id: id})
   }
 
+  _getPositionClicked(event, spaces, tileSize) {
+    let x = event.clientX
+    let y = event.clientY
+
+    let placement = spaces.filter(space => {
+    	return (_.inRange(y, space[0], space[0]+tileSize)) &&   (_.inRange(x, space[1], space[1]+tileSize))
+    })
+    this._placeNextTile(placement[0])
+  }
+
   _placeTile(tile, domPosition) {
     tile.domPosition = {
       offsetTop: domPosition[0],
@@ -102,11 +112,13 @@ class Board extends Component {
 
   render() {
     console.log("Next tile to place: ", this.state.currentTile)
-    const ghostTiles = this._availableSpaces().map((coords, i) => {
+    const availSpaces = this._availableSpaces()
+    const ghostTiles = availSpaces.map((coords, i) => {
       return <GhostTile
                 key={i}
                 positions={coords}
                 positionRef={node => this.domNode = node}
+                onClick={(event) => this._getPositionClicked(event, availSpaces, this.tileSize)}
               />
     })
 
@@ -122,7 +134,6 @@ class Board extends Component {
     return (
       <ul
         className="board"
-        onClick={this._placeNextTile.bind(this)}
       >
         {tiles}
         {ghostTiles}

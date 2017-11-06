@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import Tile from './Tile'
 
 class GhostTile extends Component {
   debugger
@@ -17,6 +16,7 @@ class GhostTile extends Component {
         className="ghost tile"
         ref={this.props.positionRef}
         style={this.styles}
+        onClick={this.props.onClick}
       >
       </li>
     )
