@@ -8,7 +8,6 @@ const stock = new TileStock()
 
 describe('board', () => {
   it('loads board with deck', () => {
-    debugger
     const _buildBoardMock = jest.fn()
     const board = shallow(<Board deck={stock} />)
     board.instance()._buildBoard = _buildBoardMock

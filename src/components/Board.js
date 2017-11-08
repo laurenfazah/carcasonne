@@ -6,15 +6,14 @@ class Board extends Component {
   constructor(props) {
     super(props);
     this.tileSize = 30
-
-  }
-
-  componentDidMount() {
-    this.setState({
+    this.state = {
       deck: this.props.deck,
       playedTiles: [],
       currentTile: false
-    })
+    }
+  }
+
+  componentDidMount() {
     this._buildBoard()
     this._updatePositionPlaced()
   }
@@ -105,8 +104,7 @@ class Board extends Component {
 
   render() {
     console.log("Next tile to place: ", this.state.currentTile)
-    const tiles = this.state.playedTiles.map((tile, i) => {
-
+    const tiles =  this.state.deck.map((tile, i, arr) => {
       return <Tile
                 key={i}
                 meta={tile}
@@ -119,7 +117,7 @@ class Board extends Component {
         className="board"
         onClick={this._placeNextTile.bind(this)}
       >
-        {tiles}
+      <p>Jhuns the best</p>
       </ul>
     );
   }
