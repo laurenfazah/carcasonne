@@ -6,19 +6,20 @@ class Board extends Component {
   constructor(props) {
     super(props);
     this.tileSize = 30
-    this.state = {
-      deck: this.props.deck,
-      playedTiles: [],
-      currentTile: false
-    }
+
   }
 
   componentDidMount() {
+    this.setState({
+      deck: this.props.deck,
+      playedTiles: [],
+      currentTile: false
+    })
+    this._buildBoard()
     this._updatePositionPlaced()
   }
 
   componentWillMount() {
-    this._buildBoard()
   }
 
   _buildBoard() {
