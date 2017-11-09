@@ -23,8 +23,8 @@ class Board extends Component {
   }
 
   _availableSpaces() {
-    const availSpaces = this._findFreeNeighbors()
-    return availSpaces.map(space => {
+    const freeNeighbors = this._findFreeNeighbors()
+    const availSpaces = freeNeighbors.map(space => {
       return space[1].map(neighbor => {
         // brute force now, refactor later
         let lastTile = _.last(this.state.playedTiles)
@@ -41,7 +41,8 @@ class Board extends Component {
           return [lastTile.domPosition.offsetTop, lastTile.domPosition.offsetLeft - this.tileSize]
         }
       }, this)
-    }, this)[0]
+    }, this)
+    return _.flatten(availSpaces)
   }
 
   _buildBoard() {
@@ -81,7 +82,6 @@ class Board extends Component {
       offsetLeft: domPosition[1]
     }
 
-    // need to figure out why this workaround needs to happen
     this.state.playedTiles.push(tile)
     this.setState({
       playedTiles: this.state.playedTiles
@@ -97,7 +97,8 @@ class Board extends Component {
 
   _placeNextTile() {
     // need to grab position clicked, for now random
-    let options = this._showAvailableSpaces()
+    let options = this._availableSpaces()
+    debugger
     this._placeTile(this.currentTile, _.sample(options))
     this._pullTile(this.currentTile)
   }
@@ -111,7 +112,7 @@ class Board extends Component {
   }
 
   render() {
-    console.log("Next tile to place: ", this.state.currentTile)
+    console.log("Next tile to place: ", this.currentTile)
     const availSpaces = this._availableSpaces()
     const ghostTiles = availSpaces.map((coords, i) => {
       return <GhostTile
