@@ -123,7 +123,6 @@ class Board extends Component {
     const tiles = this.state.playedTiles.map((tile, i) => {
       return <Tile
                 key={i}
-                ghost={false}
                 meta={tile}
                 positionRef={node => this.domNode = node}
               />
