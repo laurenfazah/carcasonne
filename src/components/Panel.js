@@ -9,10 +9,12 @@ class Panel extends Component {
     return (
       <div className="panel">
         <h3>Next Tile to Place:</h3>
+        <i className="material-icons">rotate_left</i>
         <div
           className={`${this.props.currentTile.design} tile`}
         >
         </div>
+        <i className="material-icons">rotate_right</i>
       </div>
     )
   }
