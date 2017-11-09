@@ -9,9 +9,11 @@ body {
   height: 30px;
   list-style-type: none;
   position: absolute;
-  width: 30px; }
+  width: 30px;
+  z-index: 1; }
   .tile.ghost {
-    background-color: black; }
+    background-color: black;
+    z-index: 0; }
 
 .board {
   background-color: black;
