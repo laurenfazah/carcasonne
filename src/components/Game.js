@@ -10,18 +10,11 @@ class Game extends Component {
     }
   }
 
-  componentWillMount() {
-    // console.log(this.state.stock.shuffledDeck())
-  }
-
-  componentDidMount() {
-    // console.log(this.state.stock.shuffledDeck())
-  }
-
   render() {
     return (
       <Board
         deck={this.state.stock.shuffledDeck()}
+        tileSize="40"
       >
       </Board>
     );

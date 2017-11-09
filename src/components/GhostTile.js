@@ -6,7 +6,9 @@ class GhostTile extends Component {
     super(props)
     this.styles = {
       top: this.props.positions[0],
-      left:this.props.positions[1]
+      left:this.props.positions[1],
+      height: props.tileSize,
+      width: props.tileSize
     }
   }
 

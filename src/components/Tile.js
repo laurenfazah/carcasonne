@@ -5,7 +5,9 @@ class Tile extends Component {
     super(props)
     this.styles = {
    	  top: props.meta.domPosition.offsetTop,
-   	  left: props.meta.domPosition.offsetLeft
+   	  left: props.meta.domPosition.offsetLeft,
+      height: props.tileSize,
+      width: props.tileSize
     }
   }
 
