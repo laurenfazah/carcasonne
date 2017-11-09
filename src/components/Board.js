@@ -19,7 +19,6 @@ class Board extends Component {
 
   componentWillMount() {
     this._buildBoard()
-
   }
 
   _buildBoard() {
@@ -102,7 +101,7 @@ class Board extends Component {
 
   render() {
     console.log("Next tile to place: ", this.currentTile)
-    const tiles =  this.state.playedTiles.map((tile, i, arr) => {
+    const tiles =  this.state.playedTiles.map((tile, i) => {
       return <Tile
                 key={i}
                 meta={tile}
