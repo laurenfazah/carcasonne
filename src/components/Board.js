@@ -92,14 +92,26 @@ class Board extends Component {
 
   _rotateTile(direction) {
     const tileBorders = this.currentTile.borders
+    const tileRotation = this.currentTile.rotation
     switch (direction) {
       case "left":
         tileBorders.push(tileBorders.shift())
+        if (tileRotation === 1) {
+          this.currentTile.rotation = 4
+        } else {
+          this.currentTile.rotation--
+        }
         break
       case "right":
         tileBorders.unshift(tileBorders.pop())
+        if (tileRotation < 4) {
+          this.currentTile.rotation++
+        } else {
+          this.currentTile.rotation = 1
+        }
         break
     }
+    console.log(this.currentTile.rotation)
   }
 
   _setPosition(space, neighbor) {

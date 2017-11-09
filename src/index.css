@@ -93,6 +93,14 @@ body {
     background-image: url("./images/tiles/W.png"); }
   .tile.X {
     background-image: url("./images/tiles/X.png"); }
+  .tile.rotation-1 {
+    transform: rotate(0deg); }
+  .tile.rotation-2 {
+    transform: rotate(90deg); }
+  .tile.rotation-3 {
+    transform: rotate(180deg); }
+  .tile.rotation-4 {
+    transform: rotate(270deg); }
 
 .board {
   background-color: black;

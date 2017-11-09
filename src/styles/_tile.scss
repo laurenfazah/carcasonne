@@ -42,4 +42,8 @@
   &.V {background-image: url('./images/tiles/V.png');}
   &.W {background-image: url('./images/tiles/W.png');}
   &.X {background-image: url('./images/tiles/X.png');}
+  &.rotation-1 {transform: rotate(0deg);}
+  &.rotation-2 {transform: rotate(90deg);}
+  &.rotation-3 {transform: rotate(180deg);}
+  &.rotation-4 {transform: rotate(270deg);}
 }

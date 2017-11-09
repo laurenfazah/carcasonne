@@ -16,7 +16,7 @@ class Panel extends Component {
           rotate_left
         </i>
         <div
-          className={`${this.props.currentTile.design} tile`}
+          className={`${this.props.currentTile.design} rotation-${this.props.currentTile.rotation} tile`}
         >
         </div>
         <i
