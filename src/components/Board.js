@@ -6,7 +6,7 @@ import _ from 'lodash'
 class Board extends Component {
   constructor(props) {
     super(props);
-    this.tileSize = 30
+    this.tileSize = parseInt(this.props.tileSize)
     this.currentTile = false
     this.deck = this.props.deck
     this.state = {
@@ -35,7 +35,7 @@ class Board extends Component {
   _buildBoard() {
     let starterTile = this._findTile(8)
 
-    this._placeTile(starterTile, [363, 95])
+    this._placeTile(starterTile, [150, 150])
     this._pullTile(starterTile)
   }
 
@@ -114,6 +114,7 @@ class Board extends Component {
                 positions={coords}
                 positionRef={node => this.domNode = node}
                 onClick={(event) => this._getPositionClicked(event, availSpaces, this.tileSize)}
+                tileSize={this.tileSize}
               />
     })
 
@@ -122,6 +123,7 @@ class Board extends Component {
                 key={i}
                 meta={tile}
                 positionRef={node => this.domNode = node}
+                tileSize={this.tileSize}
               />
     })
 
