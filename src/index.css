@@ -9,9 +9,11 @@ body {
   background-size: cover;
   border: 1px	#4366b0 solid;
   box-sizing: border-box;
+  height: 60px;
   list-style-type: none;
   position: absolute;
   transition: all .3s ease-in-out;
+  width: 60px;
   z-index: 1; }
   .tile.ghost {
     background-color: #000000;
@@ -74,6 +76,21 @@ body {
   margin: 0;
   position: relative;
   width: 100%; }
+
+.panel {
+  align-items: center;
+  background-color: #4366b0;
+  bottom: 0;
+  display: flex;
+  justify-content: space-around;
+  left: 0;
+  min-height: 20vh;
+  position: fixed;
+  width: 100%; }
+  .panel h3 {
+    color: #FFFFFF; }
+  .panel .tile {
+    position: relative; }
 
 .tile.absolute-middle {
   position: absolute;

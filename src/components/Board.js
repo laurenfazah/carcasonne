@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Tile from './Tile'
+import Panel from './Panel'
 import GhostTile from './GhostTile'
 import _ from 'lodash'
 
@@ -126,13 +127,14 @@ class Board extends Component {
                 tileSize={this.tileSize}
               />
     })
-
+    
     return (
       <ul
         className="board"
       >
         {tiles}
         {ghostTiles}
+        <Panel currentTile={this.currentTile}/>
       </ul>
     );
   }
