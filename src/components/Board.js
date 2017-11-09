@@ -27,18 +27,17 @@ class Board extends Component {
     const availSpaces = freeNeighbors.map(space => {
       return space[1].map(neighbor => {
         // brute force now, refactor later
-        let lastTile = _.last(this.state.playedTiles)
         if (neighbor === 0) {
-          return [lastTile.domPosition.offsetTop - this.tileSize, lastTile.domPosition.offsetLeft]
+          return [space[0].domPosition.offsetTop - this.tileSize, space[0].domPosition.offsetLeft]
         }
         if (neighbor === 1) {
-          return [lastTile.domPosition.offsetTop, lastTile.domPosition.offsetLeft + this.tileSize]
+          return [space[0].domPosition.offsetTop, space[0].domPosition.offsetLeft + this.tileSize]
         }
         if (neighbor === 2) {
-          return [lastTile.domPosition.offsetTop + this.tileSize, lastTile.domPosition.offsetLeft]
+          return [space[0].domPosition.offsetTop + this.tileSize, space[0].domPosition.offsetLeft]
         }
         if (neighbor === 3) {
-          return [lastTile.domPosition.offsetTop, lastTile.domPosition.offsetLeft - this.tileSize]
+          return [space[0].domPosition.offsetTop, space[0].domPosition.offsetLeft - this.tileSize]
         }
       }, this)
     }, this)
