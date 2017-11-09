@@ -90,6 +90,10 @@ class Board extends Component {
     this._pullTile(this.currentTile)
   }
 
+  _rotateTile(direction) {
+    
+  }
+
   _setPosition(space, neighbor) {
     return {
       0: [space.domPosition.offsetTop - this.tileSize, space.domPosition.offsetLeft],
@@ -127,14 +131,17 @@ class Board extends Component {
                 tileSize={this.tileSize}
               />
     })
-    
+
     return (
       <ul
         className="board"
       >
         {tiles}
         {ghostTiles}
-        <Panel currentTile={this.currentTile}/>
+        <Panel
+          currentTile={this.currentTile}
+          rotateTile={this._rotateTile}
+        />
       </ul>
     );
   }
