@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Tile from './Tile'
+import GhostTile from './GhostTile'
 import _ from 'lodash'
 
 class Board extends Component {
@@ -19,6 +20,16 @@ class Board extends Component {
 
   componentWillMount() {
     this._buildBoard()
+  }
+
+  _availableSpaces() {
+    const freeNeighbors = this._findFreeNeighbors()
+    const availSpaces = freeNeighbors.map(space => {
+      return space[1].map(neighbor => {
+        return this._setPosition(space[0], neighbor)
+      }, this)
+    }, this)
+    return _.flatten(availSpaces)
   }
 
   _buildBoard() {
@@ -42,17 +53,28 @@ class Board extends Component {
     return _.find(this.deck, {id: id})
   }
 
-  _placeTile(tile, domPosition) {
-    tile.domPosition = {
-      offsetTop: domPosition[0],
-      offsetLeft: domPosition[1]
-    }
+  _getPositionClicked(event, spaces, tileSize) {
+    let x = event.clientX
+    let y = event.clientY
 
-    // need to figure out why this workaround needs to happen
-    this.state.playedTiles.push(tile)
-    this.setState({
-      playedTiles: this.state.playedTiles
+    let placement = spaces.filter(space => {
+    	return (_.inRange(y, space[0], space[0]+tileSize)) &&   (_.inRange(x, space[1], space[1]+tileSize))
     })
+    this._placeNextTile(placement[0])
+  }
+
+  _placeTile(tile, domPosition) {
+    if (tile && domPosition) {
+      tile.domPosition = {
+        offsetTop: domPosition[0],
+        offsetLeft: domPosition[1]
+      }
+
+      this.state.playedTiles.push(tile)
+      this.setState({
+        playedTiles: this.state.playedTiles
+      })
+    }
   }
 
   _pullTile(tile) {
@@ -62,33 +84,18 @@ class Board extends Component {
     this.currentTile = nextTile
   }
 
-  _placeNextTile() {
-    // need to grab position clicked, for now random
-    let options = this._showAvailableSpaces()
-    this._placeTile(this.currentTile, _.sample(options))
+  _placeNextTile(placement) {
+    this._placeTile(this.currentTile, placement)
     this._pullTile(this.currentTile)
   }
 
-  _showAvailableSpaces() {
-  	const availSpaces = this._findFreeNeighbors()
-    return availSpaces.map(space => {
-      return space[1].map(neighbor => {
-        // brute force now, refactor later
-        let lastTile = _.last(this.state.playedTiles)
-        if (neighbor === 0) {
-          return [lastTile.domPosition.offsetTop - this.tileSize, lastTile.domPosition.offsetLeft]
-        }
-        if (neighbor === 1) {
-          return [lastTile.domPosition.offsetTop, lastTile.domPosition.offsetLeft + this.tileSize]
-        }
-        if (neighbor === 2) {
-          return [lastTile.domPosition.offsetTop + this.tileSize, lastTile.domPosition.offsetLeft]
-        }
-        if (neighbor === 3) {
-          return [lastTile.domPosition.offsetTop, lastTile.domPosition.offsetLeft - this.tileSize]
-        }
-      }, this)
-    }, this)[0]
+  _setPosition(space, neighbor) {
+    return {
+      0: [space.domPosition.offsetTop - this.tileSize, space.domPosition.offsetLeft],
+      1: [space.domPosition.offsetTop, space.domPosition.offsetLeft + this.tileSize],
+      2: [space.domPosition.offsetTop + this.tileSize, space.domPosition.offsetLeft],
+      3: [space.domPosition.offsetTop, space.domPosition.offsetLeft - this.tileSize]
+    }[neighbor]
   }
 
   _updatePositionPlaced() {
@@ -100,8 +107,17 @@ class Board extends Component {
   }
 
   render() {
-    console.log("Next tile to place: ", this.currentTile)
-    const tiles =  this.state.playedTiles.map((tile, i) => {
+    const availSpaces = this._availableSpaces()
+    const ghostTiles = availSpaces.map((coords, i) => {
+      return <GhostTile
+                key={i}
+                positions={coords}
+                positionRef={node => this.domNode = node}
+                onClick={(event) => this._getPositionClicked(event, availSpaces, this.tileSize)}
+              />
+    })
+
+    const tiles = this.state.playedTiles.map((tile, i) => {
       return <Tile
                 key={i}
                 meta={tile}
@@ -112,9 +128,9 @@ class Board extends Component {
     return (
       <ul
         className="board"
-        onClick={this._placeNextTile.bind(this)}
       >
-      {tiles}
+        {tiles}
+        {ghostTiles}
       </ul>
     );
   }
