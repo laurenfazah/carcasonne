@@ -4,9 +4,11 @@
   background-size: cover;
   border: 1px	#4366b0 solid;
   box-sizing: border-box;
+  height: 60px;
   list-style-type: none;
   position: absolute;
   transition: all .3s ease-in-out;
+  width: 60px;
   z-index: 1;
   &.ghost {
     background-color: #000000;
