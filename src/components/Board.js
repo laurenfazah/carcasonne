@@ -95,11 +95,8 @@ class Board extends Component {
     this.currentTile = nextTile
   }
 
-  _placeNextTile() {
-    // need to grab position clicked, for now random
-    let options = this._availableSpaces()
-    debugger
-    this._placeTile(this.currentTile, _.sample(options))
+  _placeNextTile(placement) {
+    this._placeTile(this.currentTile, placement)
     this._pullTile(this.currentTile)
   }
 
