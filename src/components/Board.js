@@ -6,19 +6,20 @@ class Board extends Component {
   constructor(props) {
     super(props);
     this.tileSize = 30
+    this.currentTile = false
+    this.deck = this.props.deck
     this.state = {
-      deck: this.props.deck,
-      playedTiles: [],
-      currentTile: false
+      playedTiles: []
     }
   }
 
   componentDidMount() {
-    this._buildBoard()
     this._updatePositionPlaced()
   }
 
   componentWillMount() {
+    this._buildBoard()
+
   }
 
   _buildBoard() {
@@ -39,7 +40,7 @@ class Board extends Component {
   }
 
   _findTile(id) {
-    return _.find(this.state.deck, {id: id})
+    return _.find(this.deck, {id: id})
   }
 
   _placeTile(tile, domPosition) {
@@ -56,20 +57,17 @@ class Board extends Component {
   }
 
   _pullTile(tile) {
-    _.pull(this.state.deck, tile)
+    _.pull(this.deck, tile)
 
-    let nextTile = this.state.deck.pop()
-    this.setState({
-      currentTile: nextTile,
-      deck: this.state.deck
-    })
+    let nextTile = this.deck.pop()
+    this.currentTile = nextTile
   }
 
   _placeNextTile() {
     // need to grab position clicked, for now random
     let options = this._showAvailableSpaces()
-    this._placeTile(this.state.currentTile, _.sample(options))
-    this._pullTile(this.state.currentTile)
+    this._placeTile(this.currentTile, _.sample(options))
+    this._pullTile(this.currentTile)
   }
 
   _showAvailableSpaces() {
@@ -103,8 +101,8 @@ class Board extends Component {
   }
 
   render() {
-    console.log("Next tile to place: ", this.state.currentTile)
-    const tiles =  this.state.deck.map((tile, i, arr) => {
+    console.log("Next tile to place: ", this.currentTile)
+    const tiles =  this.state.playedTiles.map((tile, i, arr) => {
       return <Tile
                 key={i}
                 meta={tile}
@@ -117,7 +115,7 @@ class Board extends Component {
         className="board"
         onClick={this._placeNextTile.bind(this)}
       >
-      <p>Jhuns the best</p>
+      {tiles}
       </ul>
     );
   }
