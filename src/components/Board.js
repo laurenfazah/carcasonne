@@ -26,19 +26,7 @@ class Board extends Component {
     const freeNeighbors = this._findFreeNeighbors()
     const availSpaces = freeNeighbors.map(space => {
       return space[1].map(neighbor => {
-        // brute force now, refactor later
-        if (neighbor === 0) {
-          return [space[0].domPosition.offsetTop - this.tileSize, space[0].domPosition.offsetLeft]
-        }
-        if (neighbor === 1) {
-          return [space[0].domPosition.offsetTop, space[0].domPosition.offsetLeft + this.tileSize]
-        }
-        if (neighbor === 2) {
-          return [space[0].domPosition.offsetTop + this.tileSize, space[0].domPosition.offsetLeft]
-        }
-        if (neighbor === 3) {
-          return [space[0].domPosition.offsetTop, space[0].domPosition.offsetLeft - this.tileSize]
-        }
+        return this._setPosition(space[0], neighbor)
       }, this)
     }, this)
     return _.flatten(availSpaces)
@@ -97,6 +85,15 @@ class Board extends Component {
   _placeNextTile(placement) {
     this._placeTile(this.currentTile, placement)
     this._pullTile(this.currentTile)
+  }
+
+  _setPosition(space, neighbor) {
+    return {
+      0: [space.domPosition.offsetTop - this.tileSize, space.domPosition.offsetLeft],
+      1: [space.domPosition.offsetTop, space.domPosition.offsetLeft + this.tileSize],
+      2: [space.domPosition.offsetTop + this.tileSize, space.domPosition.offsetLeft],
+      3: [space.domPosition.offsetTop, space.domPosition.offsetLeft - this.tileSize]
+    }[neighbor]
   }
 
   _updatePositionPlaced() {
