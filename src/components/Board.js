@@ -64,15 +64,17 @@ class Board extends Component {
   }
 
   _placeTile(tile, domPosition) {
-    tile.domPosition = {
-      offsetTop: domPosition[0],
-      offsetLeft: domPosition[1]
-    }
+    if (tile && domPosition) {
+      tile.domPosition = {
+        offsetTop: domPosition[0],
+        offsetLeft: domPosition[1]
+      }
 
-    this.state.playedTiles.push(tile)
-    this.setState({
-      playedTiles: this.state.playedTiles
-    })
+      this.state.playedTiles.push(tile)
+      this.setState({
+        playedTiles: this.state.playedTiles
+      })
+    }
   }
 
   _pullTile(tile) {
@@ -105,7 +107,6 @@ class Board extends Component {
   }
 
   render() {
-    console.log("Next tile to place: ", this.currentTile)
     const availSpaces = this._availableSpaces()
     const ghostTiles = availSpaces.map((coords, i) => {
       return <GhostTile
