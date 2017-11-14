@@ -14,7 +14,7 @@ class Tile extends Component {
   render() {
     return (
       <li
-        className={`${this.props.meta.design} tile`}
+        className={`${this.props.meta.design} rotation-${this.props.meta.rotation} tile`}
         ref={this.props.positionRef}
 	      style={this.styles}
       >
