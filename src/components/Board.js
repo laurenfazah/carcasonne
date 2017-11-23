@@ -15,10 +15,6 @@ class Board extends Component {
     }
   }
 
-  componentDidMount() {
-    this._updatePositionPlaced()
-  }
-
   componentWillMount() {
     this._buildBoard()
   }
@@ -26,8 +22,11 @@ class Board extends Component {
   _availableSpaces() {
     const freeNeighbors = this._findFreeNeighbors()
     const availSpaces = freeNeighbors.map(space => {
-      return space[1].map(neighbor => {
-        return this._setPosition(space[0], neighbor)
+      let tile = space[0]
+      let neighbors = space[1]
+      return neighbors.map(neighbor => {
+        let position =  this._setPosition(tile, neighbor)
+        return position
       }, this)
     }, this)
     return _.flatten(availSpaces)
@@ -60,6 +59,7 @@ class Board extends Component {
 
     let placement = spaces.filter(space => {
     	return (_.inRange(y, space[0], space[0]+tileSize)) &&   (_.inRange(x, space[1], space[1]+tileSize))
+      // update neighbor to true
     })
     this._placeNextTile(placement[0])
   }
@@ -114,21 +114,13 @@ class Board extends Component {
     console.log(this.currentTile.rotation)
   }
 
-  _setPosition(space, neighbor) {
+  _setPosition(tile, neighbor) {
     return {
-      0: [space.domPosition.offsetTop - this.tileSize, space.domPosition.offsetLeft],
-      1: [space.domPosition.offsetTop, space.domPosition.offsetLeft + this.tileSize],
-      2: [space.domPosition.offsetTop + this.tileSize, space.domPosition.offsetLeft],
-      3: [space.domPosition.offsetTop, space.domPosition.offsetLeft - this.tileSize]
+      0: [tile.domPosition.offsetTop - this.tileSize, tile.domPosition.offsetLeft],
+      1: [tile.domPosition.offsetTop, tile.domPosition.offsetLeft + this.tileSize],
+      2: [tile.domPosition.offsetTop + this.tileSize, tile.domPosition.offsetLeft],
+      3: [tile.domPosition.offsetTop, tile.domPosition.offsetLeft - this.tileSize]
     }[neighbor]
-  }
-
-  _updatePositionPlaced() {
-    let lastTile = _.last(this.state.playedTiles)
-    lastTile.domPosition = {
-      offsetTop: this.domNode.offsetTop,
-      offsetLeft: this.domNode.offsetLeft
-    }
   }
 
   render() {
