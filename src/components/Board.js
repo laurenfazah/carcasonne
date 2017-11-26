@@ -8,7 +8,6 @@ class Board extends Component {
   constructor(props) {
     super(props);
     this.tileSize = parseInt(this.props.tileSize)
-    // this.currentTile = false
     this.deck = this.props.deck
     this.state = {
       playedTiles: [],
