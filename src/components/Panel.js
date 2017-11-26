@@ -4,6 +4,9 @@ class Panel extends Component {
   constructor(props) {
     super(props)
     this.currentTile = this.props.currentTile
+    this.state = {
+      currentTile: this.props.currentTile
+    }
   }
   render() {
     return (

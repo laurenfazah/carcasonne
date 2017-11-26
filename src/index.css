@@ -3,6 +3,8 @@ body {
   font-family: sans-serif;
   margin: 0;
   padding: 0; }
+  body ul, body menu, body dir {
+    -webkit-padding-start: 0px; }
 
 .material-icons {
   color: #FFFFFF;

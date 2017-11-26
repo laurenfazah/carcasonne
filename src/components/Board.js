@@ -8,15 +8,12 @@ class Board extends Component {
   constructor(props) {
     super(props);
     this.tileSize = parseInt(this.props.tileSize)
-    this.currentTile = false
+    // this.currentTile = false
     this.deck = this.props.deck
     this.state = {
-      playedTiles: []
+      playedTiles: [],
+      currentTile: false
     }
-  }
-
-  componentDidMount() {
-    this._updatePositionPlaced()
   }
 
   componentWillMount() {
@@ -26,8 +23,11 @@ class Board extends Component {
   _availableSpaces() {
     const freeNeighbors = this._findFreeNeighbors()
     const availSpaces = freeNeighbors.map(space => {
-      return space[1].map(neighbor => {
-        return this._setPosition(space[0], neighbor)
+      let tile = space[0]
+      let neighbors = space[1]
+      return neighbors.map(neighbor => {
+        let position =  this._setPosition(tile, neighbor)
+        return position
       }, this)
     }, this)
     return _.flatten(availSpaces)
@@ -60,6 +60,7 @@ class Board extends Component {
 
     let placement = spaces.filter(space => {
     	return (_.inRange(y, space[0], space[0]+tileSize)) &&   (_.inRange(x, space[1], space[1]+tileSize))
+      // update neighbor to true
     })
     this._placeNextTile(placement[0])
   }
@@ -72,63 +73,54 @@ class Board extends Component {
       }
 
       this.state.playedTiles.push(tile)
-      this.setState({
-        playedTiles: this.state.playedTiles
-      })
+      this.setState({ playedTiles: this.state.playedTiles })
     }
   }
 
   _pullTile(tile) {
     _.pull(this.deck, tile)
 
-    let nextTile = this.deck.pop()
-    this.currentTile = nextTile
+    const nextTile = this.deck.pop()
+    // this.currentTile = nextTile
+    this.setState({ currentTile: nextTile })
   }
 
   _placeNextTile(placement) {
-    this._placeTile(this.currentTile, placement)
-    this._pullTile(this.currentTile)
+    this._placeTile(this.state.currentTile, placement)
+    this._pullTile(this.state.currentTile)
   }
 
   _rotateTile(direction) {
-    const tileBorders = this.currentTile.borders
-    const tileRotation = this.currentTile.rotation
+    const tileBorders = this.state.currentTile.borders
+    const tileRotation = this.state.currentTile.rotation
     switch (direction) {
       case "left":
         tileBorders.push(tileBorders.shift())
         if (tileRotation === 1) {
-          this.currentTile.rotation = 4
+          this.state.currentTile.rotation = 4
         } else {
-          this.currentTile.rotation--
+          this.state.currentTile.rotation--
         }
         break
       case "right":
         tileBorders.unshift(tileBorders.pop())
         if (tileRotation < 4) {
-          this.currentTile.rotation++
+          this.state.currentTile.rotation++
         } else {
-          this.currentTile.rotation = 1
+          this.state.currentTile.rotation = 1
         }
         break
     }
-    console.log(this.currentTile.rotation)
+    this.setState({ currentTile: this.state.currentTile })
   }
 
-  _setPosition(space, neighbor) {
+  _setPosition(tile, neighbor) {
     return {
-      0: [space.domPosition.offsetTop - this.tileSize, space.domPosition.offsetLeft],
-      1: [space.domPosition.offsetTop, space.domPosition.offsetLeft + this.tileSize],
-      2: [space.domPosition.offsetTop + this.tileSize, space.domPosition.offsetLeft],
-      3: [space.domPosition.offsetTop, space.domPosition.offsetLeft - this.tileSize]
+      0: [tile.domPosition.offsetTop - this.tileSize, tile.domPosition.offsetLeft],
+      1: [tile.domPosition.offsetTop, tile.domPosition.offsetLeft + this.tileSize],
+      2: [tile.domPosition.offsetTop + this.tileSize, tile.domPosition.offsetLeft],
+      3: [tile.domPosition.offsetTop, tile.domPosition.offsetLeft - this.tileSize]
     }[neighbor]
-  }
-
-  _updatePositionPlaced() {
-    let lastTile = _.last(this.state.playedTiles)
-    lastTile.domPosition = {
-      offsetTop: this.domNode.offsetTop,
-      offsetLeft: this.domNode.offsetLeft
-    }
   }
 
   render() {
@@ -159,8 +151,8 @@ class Board extends Component {
         {tiles}
         {ghostTiles}
         <Panel
-          currentTile={this.currentTile}
-          rotateTile={this._rotateTile}
+          currentTile={this.state.currentTile}
+          rotateTile={this._rotateTile.bind(this)}
         />
       </ul>
     );
